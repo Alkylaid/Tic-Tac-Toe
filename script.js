@@ -97,14 +97,16 @@ const controller = (() => {
     function render() {
         squares.forEach((square, index) => {
             square.addEventListener('click', function boxClick() {
-                if (!aiTurn){
-                playMove(index);
-                board.getBoard(index) === undefined ? square.innerHTML = " " : square.innerHTML = `${board.getBoard(index)}`
-                aiTurn = true;
+                if (!aiTurn && !gameOver){
+                    if(board.checkValidMove(index)) {
+                        playMove(index);
+                        aiTurn = true;
+                    }
                 if(!gameOver){
-                setTimeout(aiPlaysEasy, 500);
+                setTimeout(aiPlaysEasy, 300);
                 }
                 }
+                board.getBoard(index) === undefined ? square.innerHTML = " " : square.innerHTML = `${board.getBoard(index)}`
             })
             
         }
@@ -113,7 +115,6 @@ const controller = (() => {
 
 
     function playMove(index) {
-        if (board.checkValidMove(index)) {
             board.updateBoard(index, currentPlayer.mark)
             squares[index].innerHTML = currentPlayer.mark;
             totalMoves++;
@@ -124,7 +125,7 @@ const controller = (() => {
             currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
 
 
-        }
+        
 
     }
 
@@ -176,6 +177,9 @@ const controller = (() => {
         render();
     }
 
+    function addMark(index) {
+        board.getBoard(index) === undefined ? squares[index].innerHTML = " " : squares[index].innerHTML = `${board.getBoard(index)}`
+    }
     function aiPlaysEasy() {
             if (aiTurn) {
                 let index = Math.floor(Math.random() * 9);
@@ -185,7 +189,7 @@ const controller = (() => {
                 }
                     playMove(index);
                     aiTurn = false;
-                    board.getBoard(index) === undefined ? squares[index].innerHTML = " " : squares[index].innerHTML = `${board.getBoard(index)}`
+                   
                 }
             }
         
