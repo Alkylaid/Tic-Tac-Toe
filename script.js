@@ -11,13 +11,17 @@ const board = (() => {
         return gameBoard[index];
     }
 
+    function clearBoard() {
+        gameBoard.fill(' ');
+    }
+
 
     function checkValidMove(index) {
         return (gameBoard[index] === ' ');
     }
 
     function checkStatus() {
-    
+
         if (gameBoard[0] === gameBoard[1] && gameBoard[0] === gameBoard[2] && gameBoard[0] != ' ') {
             return controller.getCurrentPlayer();
         }
@@ -58,6 +62,7 @@ const board = (() => {
         checkValidMove: checkValidMove,
         checkStatus: checkStatus,
         getBoard: getBoard,
+        clearBoard: clearBoard,
     };
 })();
 
@@ -79,7 +84,7 @@ const controller = (() => {
 
     (function render() {
         squares.forEach((square, index) => {
-            square.addEventListener('click', () => {
+            square.addEventListener('click', function boxClick() {
                 playMove(index);
             })
         }
@@ -95,7 +100,7 @@ const controller = (() => {
                 board.checkStatus() === currentPlayer ? declareWinner(currentPlayer) : declareWinner("Draw");
             }
             currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
-            
+
 
         }
 
@@ -120,7 +125,20 @@ const controller = (() => {
         return currentPlayer;
     }
 
-    return {getTotalMoves, getCurrentPlayer }
+    function reset() {
+        board.clearBoard();
+        squares.forEach((square) => {
+            square.innerHTML = '';
+            if (document.contains(document.getElementById('score'))) {
+                score.remove();
+            }
+            currentPlayer = playerOne;
+            totalMoves = 0;
+        })
+
+    }
+
+    return { getTotalMoves, getCurrentPlayer, reset }
 })();
 
 
