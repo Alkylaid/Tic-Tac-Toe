@@ -1,12 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+body {
+    font-family: 'Pacifico', cursive;
+}
 .container {
+    width: 100%;
+}
+
+#score {
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+#grid {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3,1fr);
-    height: 20vh;
-    width: 10vw;
+    height: 500px;
+    width: 500px;
+    gap: 10px;
+  
 }
+
 
 .grid-item{
     border: 1px solid black;
+    font-size: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-item:hover{
+    transform: scale(1.1);
 }
