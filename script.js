@@ -71,16 +71,25 @@ const playerFactory = (mark) => {
     return { mark };
 }
 
-const playerOne = playerFactory("X");
 
-const playerTwo = playerFactory("O");
+
+
 
 const controller = (() => {
-    let currentPlayer = playerOne;
+    let currentPlayer;
     let totalMoves = 0;
     const container = document.querySelector('.container');
+    const modal = document.getElementById("modal");
 
     const squares = document.querySelectorAll(".grid-item");
+
+    const markerButtons = document.querySelectorAll(".player-marker");
+
+    markerButtons.forEach((button) =>{
+        button.addEventListener('click', () => {
+            startGame(button.value);
+        })
+    })
 
     function render() {
         squares.forEach((square, index) => {
@@ -91,6 +100,7 @@ const controller = (() => {
         }
         )
     };
+    
 
     function playMove(index) {
         if (board.checkValidMove(index)) {
@@ -137,7 +147,20 @@ const controller = (() => {
         totalMoves = 0;
     }
 
-render();
+function startGame(markerOption) {
+    if (markerOption === "X") {
+        playerOne = playerFactory("X");
+        playerTwo = playerFactory("O");
+        currentPlayer = playerOne;
+    } else {
+        playerTwo = playerFactory("X");
+        playerOne = playerFactory("O");
+        currentPlayer = playerTwo;
+    }
+    
+    modal.style.display = "none";
+    render();
+}
 
     return { getTotalMoves, getCurrentPlayer, reset }
 })();
