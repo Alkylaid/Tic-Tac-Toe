@@ -58,11 +58,11 @@ const board = (() => {
 
     }
     return {
-        updateBoard: updateBoard,
-        checkValidMove: checkValidMove,
-        checkStatus: checkStatus,
-        getBoard: getBoard,
-        clearBoard: clearBoard,
+        updateBoard,
+        checkValidMove,
+        checkStatus,
+        clearBoard,
+        getBoard
     };
 })();
 
@@ -82,14 +82,15 @@ const controller = (() => {
 
     const squares = document.querySelectorAll(".grid-item");
 
-    (function render() {
+    function render() {
         squares.forEach((square, index) => {
             square.addEventListener('click', function boxClick() {
                 playMove(index);
             })
+            board.getBoard(index) === undefined ? square.innerHTML = " " : square.innerHTML = `${board.getBoard(index)}`
         }
         )
-    })();
+    };
 
     function playMove(index) {
         if (board.checkValidMove(index)) {
@@ -127,16 +128,16 @@ const controller = (() => {
 
     function reset() {
         board.clearBoard();
-        squares.forEach((square) => {
-            square.innerHTML = '';
-            if (document.contains(document.getElementById('score'))) {
-                score.remove();
-            }
-            currentPlayer = playerOne;
-            totalMoves = 0;
-        })
 
+        render();
+        if (document.contains(document.getElementById('score'))) {
+            score.remove();
+        }
+        currentPlayer = playerOne;
+        totalMoves = 0;
     }
+
+render();
 
     return { getTotalMoves, getCurrentPlayer, reset }
 })();
