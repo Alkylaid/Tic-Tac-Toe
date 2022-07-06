@@ -78,14 +78,17 @@ const playerFactory = (mark) => {
 const controller = (() => {
     let currentPlayer;
     let totalMoves = 0;
-    const container = document.querySelector('.container');
+    let gameOver = false;
+    let aiTurn = false;
+    //const container = document.querySelector('.container');
+    const header = document.getElementById('header');
     const modal = document.getElementById("modal");
 
     const squares = document.querySelectorAll(".grid-item");
 
     const markerButtons = document.querySelectorAll(".player-marker");
 
-    markerButtons.forEach((button) =>{
+    markerButtons.forEach((button) => {
         button.addEventListener('click', () => {
             startGame(button.value);
         })
@@ -94,13 +97,20 @@ const controller = (() => {
     function render() {
         squares.forEach((square, index) => {
             square.addEventListener('click', function boxClick() {
+                if (!aiTurn){
                 playMove(index);
+                board.getBoard(index) === undefined ? square.innerHTML = " " : square.innerHTML = `${board.getBoard(index)}`
+                aiTurn = true;
+                if(!gameOver){
+                setTimeout(aiPlaysEasy, 500);
+                }
+                }
             })
-            board.getBoard(index) === undefined ? square.innerHTML = " " : square.innerHTML = `${board.getBoard(index)}`
+            
         }
         )
     };
-    
+
 
     function playMove(index) {
         if (board.checkValidMove(index)) {
@@ -109,6 +119,7 @@ const controller = (() => {
             totalMoves++;
             if (board.checkStatus() === currentPlayer || board.checkStatus() === "Draw") {
                 board.checkStatus() === currentPlayer ? declareWinner(currentPlayer) : declareWinner("Draw");
+                gameOver = true;
             }
             currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
 
@@ -122,6 +133,7 @@ const controller = (() => {
     }
 
     function declareWinner(winner) {
+        gameOver = true;
         const score = document.createElement('div');
         score.setAttribute('id', 'score');
         if (winner === "Draw") {
@@ -129,7 +141,7 @@ const controller = (() => {
         } else {
             score.innerHTML = `The winner is ${currentPlayer.mark}`
         }
-        container.prepend(score);
+        header.append(score);
     }
 
     function getCurrentPlayer() {
@@ -147,22 +159,38 @@ const controller = (() => {
         totalMoves = 0;
     }
 
-function startGame(markerOption) {
-    if (markerOption === "X") {
-        playerOne = playerFactory("X");
-        playerTwo = playerFactory("O");
-        currentPlayer = playerOne;
-    } else {
-        playerTwo = playerFactory("X");
-        playerOne = playerFactory("O");
-        currentPlayer = playerTwo;
-    }
-    
-    modal.style.display = "none";
-    render();
-}
+    function startGame(markerOption) {
+        if (markerOption === "X") {
+            playerOne = playerFactory("X");
+            playerTwo = playerFactory("O");
+            currentPlayer = playerOne;
+        } else {
+            playerTwo = playerFactory("X");
+            playerOne = playerFactory("O");
+            currentPlayer = playerTwo;
+            aiTurn = true;
+            aiPlaysEasy();
+        }
 
-    return { getTotalMoves, getCurrentPlayer, reset }
+        modal.style.display = "none";
+        render();
+    }
+
+    function aiPlaysEasy() {
+            if (aiTurn) {
+                let index = Math.floor(Math.random() * 9);
+                console.log(index)
+                while (!board.checkValidMove(index)) {
+                    index = Math.floor(Math.random() * 9);
+                }
+                    playMove(index);
+                    aiTurn = false;
+                    board.getBoard(index) === undefined ? squares[index].innerHTML = " " : squares[index].innerHTML = `${board.getBoard(index)}`
+                }
+            }
+        
+
+    return { getTotalMoves, getCurrentPlayer, reset, aiPlaysEasy }
 })();
 
 
