@@ -76,6 +76,8 @@ const controller = (() => {
     const vsComputerBtn = document.getElementById("vs-computer");
     const vsPlayerBtn = document.getElementById("vs-player");
     const aiDifficultySelect = document.getElementById("difficulty-select");
+    const newGameBtn = document.getElementById("reset");
+    const menuBtns = document.querySelectorAll(".menu-button.options");
     let difficulty;
     let playerOne;
     let playerTwo;
@@ -106,14 +108,23 @@ const controller = (() => {
 
     vsPlayerBtn.addEventListener('click', () => {
         modal.style.display = "none";
-      
+        document.getElementById("menuPlayerSelect").classList.add("active");
         createPlayers();
         startGame();
     })
 
     vsComputerBtn.addEventListener('click', () => {
         vsAi = true;
+       
+        document.getElementById("menuAiSelect").classList.add("active");
         difficulty = aiDifficultySelect.options[aiDifficultySelect.selectedIndex].value;
+        if (difficulty === "easy") {
+            document.getElementById("menuEasySelect").classList.add("active");
+        } else if (difficulty === "medium") {
+            document.getElementById("menuMedSelect").classList.add("active");
+        } else if (difficulty === "hard") {
+            document.getElementById("menuHardSelect").classList.add("active");
+        }
         modalContentOne.style.display = "none";
         modalContentTwo.style.display = "flex";
 
@@ -122,8 +133,49 @@ const controller = (() => {
     markerButtons.forEach((button) => {
         button.addEventListener('click', () => {
             modal.style.display = "none";
+            if (button.value === "X") {
+                document.getElementById("menuCrossSelect").classList.add("active");
+            } else if (button.value === "O") {
+                document.getElementById("menuNoughtSelect").classList.add("active");
+            }
             createPlayers(button.value);
             startGame();
+        })
+    })
+
+    newGameBtn.addEventListener('click', () => {
+       reset();
+    })
+
+    menuBtns.forEach((button) => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('active')) {
+                button.classList.remove('active');
+            } else if (button.id === "menuPlayerSelect") {
+                menuBtns[1].classList.remove('active');
+                button.classList.add('active');
+            } else if (button.id === "menuAiSelect") {
+                menuBtns[0].classList.remove('active');
+                button.classList.add('active');
+            } else if (button.id === "menuCrossSelect") {
+                menuBtns[3].classList.remove('active');
+                button.classList.add('active');
+            } else if (button.id === "menuNoughtSelect") {
+                menuBtns[2].classList.remove('active');
+                button.classList.add('active');
+            } else if (button.id === "menuEasySelect") {
+                menuBtns[5].classList.remove('active');
+                menuBtns[6].classList.remove('active');
+                button.classList.add('active');
+            } else if (button.id === "menuMedSelect") {
+                menuBtns[4].classList.remove('active');
+                menuBtns[6].classList.remove('active');
+                button.classList.add('active');
+            } else if (button.id === "menuHardSelect") {
+                menuBtns[4].classList.remove('active');
+                menuBtns[5].classList.remove('active');
+                button.classList.add('active');
+            }
         })
     })
 
@@ -135,9 +187,10 @@ const controller = (() => {
             square.addEventListener('click', () => {
 
                 if (!aiTurn && !gameOver) {
-
                     if (board.checkValidMove(index)) {
                         playMove(index);
+                    } else {
+                        return;
                     }
                     if (!gameOver && vsAi) {
                         aiTurn = true;
@@ -192,13 +245,16 @@ const controller = (() => {
     //Resets board
     function reset() {
         board.clearBoard();
-
-        render();
+        squares.forEach((square) => {
+            square.innerHTML = " ";
+        })
         if (document.contains(document.getElementById('score'))) {
             score.remove();
         }
         currentPlayer = playerOne;
         totalMoves = 0;
+        gameOver = false;
+        startGame();
     }
 
     //starts and renders game board
