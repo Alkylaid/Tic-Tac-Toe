@@ -1,4 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+@keyframes append-animate {
+    from {
+
+        transform: scale(1.5);
+        opacity: 0;
+    }
+
+    to {
+
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes expand-font {
+    from {
+        color: #000;
+        font-size: 0rem;
+    }
+
+    to {
+        color: #ff0000;
+        font-size: 4rem;
+    }
+}
+
 body {
     font-family: 'Pacifico', cursive;
     font-size: 16px;
@@ -16,12 +43,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 
 
-#modal-content-1{
+#modal-content-1 {
     width: 500px;
     height: 300px;
     background-color: #fff;
@@ -44,19 +71,19 @@ body {
     column-gap: 50px;
 }
 
-    
 
-#modal-content-1 > .option-buttons {
+
+#modal-content-1>.option-buttons {
     display: grid;
     justify-content: space-around;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
     column-gap: 50px;
     row-gap: 20px;
-    
+
 }
 
-#modal-content-2 > .option-buttons {
+#modal-content-2>.option-buttons {
     display: grid;
     grid-template-columns: auto auto;
     column-gap: 50px;
@@ -64,12 +91,13 @@ body {
 
 
 
-.player-select, .player-marker{
+.player-select,
+.player-marker {
     font-family: 'Pacifico', cursive;
     width: 150px;
     height: 150px;
-    
-   
+
+
 }
 
 .player-select {
@@ -81,34 +109,35 @@ body {
 
 }
 
-.player-select:hover, .player-marker:hover{
+.player-select:hover,
+.player-marker:hover {
     transform: scale(1.1);
 }
 
 #vs-player {
-    background-image: url('img/person.svg') ;
+    background-image: url('img/person.svg');
     background-position: center;
     background-repeat: no-repeat;
-    background-size:  100px;
+    background-size: 100px;
     background-color: #ffffff;
-   
+
 }
 
 #vs-computer {
     background: url('img/monitor.svg') center no-repeat;
-    background-size:  80px;
+    background-size: 80px;
 }
 
-#difficulty-select{
+#difficulty-select {
     grid-column: 2/3;
     border: 1px solid rgb(225, 225, 225);
 }
 
-#difficulty-select:hover{
+#difficulty-select:hover {
     border: 1px solid rgb(225, 225, 225);
 }
 
-.player-marker{
+.player-marker {
     border: 1px solid rgb(225, 225, 225);
     font-size: 4rem;
     width: 150px;
@@ -116,11 +145,12 @@ body {
     background-color: #ffffff;
 }
 
-#choose-opponent-message{
+#choose-opponent-message {
     margin: 0;
     font-size: 1.7rem;
 }
-#start-message{
+
+#start-message {
     font-size: 1.7rem;
 
 
@@ -134,7 +164,7 @@ body {
 #header {
     height: 150px;
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
     flex-flow: column;
 
@@ -148,8 +178,10 @@ body {
 
 #score {
     text-align: center;
-    font-size: 1.3rem;
-
+    font-size: 4rem;
+    margin-top: 30px;
+    animation: expand-font 0.3s linear;
+    color: #ff0000;
 }
 
 #menu {
@@ -160,10 +192,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
-.menu-button{
+.menu-button {
     width: 100px;
     height: 50px;
     border: 1px solid rgb(225, 225, 225);
@@ -172,17 +204,19 @@ body {
     text-align: center;
 }
 
-.menu-button:hover{
+.menu-button:hover {
     box-shadow: 0 0 10px #fff;
 
 }
 
-.menu-button.active{
+.menu-button.active {
     transform: scale(1.10);
     box-shadow: 0 0 10px #fff;
 }
 
-#reset, #menuNoughtSelect, #menuAiSelect{
+#reset,
+#menuNoughtSelect,
+#menuAiSelect {
     margin-right: 50px;
 }
 
@@ -192,40 +226,29 @@ body {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3,1fr);
+    grid-template-rows: repeat(3, 1fr);
     height: 500px;
     width: 500px;
     gap: 10px;
-    
-   
-}
 
-@keyframes append-animate {
-	from {
-		transform: scale(2);
-		opacity: 0;
-	}
-	to {
-		transform: scale(1);
-		opacity: 1;	
-	}
+
 }
 
 
-.grid-item{
+.grid-item {
     border: 1px solid black;
     font-size: 5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
 }
 
-.grid-item > span {
+.grid-item>span {
     animation: append-animate .3s linear;
 }
 
-.grid-item:hover{
+.grid-item:hover {
     transform: scale(1.1);
     transition: 0.2s;
 }

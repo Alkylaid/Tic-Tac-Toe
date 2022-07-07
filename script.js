@@ -66,7 +66,7 @@ const controller = (() => {
     let totalMoves = 0;
     let gameOver = false;
     let aiTurn = false;
-    //const container = document.querySelector('.container');
+    container = document.querySelector('.container');
     const header = document.getElementById('header');
     const modal = document.getElementById("modal");
     const modalContentOne = document.getElementById("modal-content-1");
@@ -299,9 +299,9 @@ const controller = (() => {
         if (winner === "Draw") {
             score.innerHTML = "DRAW!";
         } else {
-            score.innerHTML = `The winner is ${currentPlayer.mark}`
+            score.innerHTML = `The winner is ${currentPlayer.mark}!`
         }
-        header.append(score);
+        container.append(score);
     }
 
     //Gets current player
