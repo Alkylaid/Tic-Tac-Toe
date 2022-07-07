@@ -156,7 +156,6 @@ body {
     width: 100%;
     margin-bottom: 50px;
     height: 150px;
-    border: 1px solid rgb(225, 225, 225);
     background-color: #000;
     display: flex;
     justify-content: center;
@@ -180,7 +179,7 @@ body {
 
 .menu-button.active{
     transform: scale(1.10);
-    box-shadow: 0 0 15px #fff;
+    box-shadow: 0 0 10px #fff;
 }
 
 #reset, #menuNoughtSelect, #menuAiSelect{
@@ -201,6 +200,17 @@ body {
    
 }
 
+@keyframes append-animate {
+	from {
+		transform: scale(2);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;	
+	}
+}
+
 
 .grid-item{
     border: 1px solid black;
@@ -208,6 +218,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    
+}
+
+.grid-item > span {
+    animation: append-animate .3s linear;
 }
 
 .grid-item:hover{

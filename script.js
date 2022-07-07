@@ -115,7 +115,7 @@ const controller = (() => {
 
     vsComputerBtn.addEventListener('click', () => {
         vsAi = true;
-       
+
         document.getElementById("menuAiSelect").classList.add("active");
         difficulty = aiDifficultySelect.options[aiDifficultySelect.selectedIndex].value;
         if (difficulty === "easy") {
@@ -144,34 +144,101 @@ const controller = (() => {
     })
 
     newGameBtn.addEventListener('click', () => {
-       reset();
-    })
+        let menuSelections = document.querySelectorAll(".menu-button.options.active");
+        if (menuSelections.length === 1) {
+            vsAi = false;
+            createPlayers();
+        } else {
+            vsAi = true;
+            for (let i = menuSelections.length - 1; i > 0; i--) {
+                if (menuSelections[i].id === "menuEasySelect" || 
+                menuSelections[i].id === "menuMedSelect" || 
+                menuSelections[i].id === "menuHardSelect") {
+                    difficulty = menuSelections[i].value;
+                }
+                if(menuSelections[i].id === "menuCrossSelect" || menuSelections[i].id === "menuNoughtSelect") {
+                    createPlayers(menuSelections[i].value);
+                }
+               
+       }
+       
+    }
+    reset();
+        })
 
     menuBtns.forEach((button) => {
         button.addEventListener('click', () => {
             if (button.classList.contains('active')) {
-                button.classList.remove('active');
+                if(!button.id == "menuAiSelect") {
+                    button.classList.remove('active');
+                }
             } else if (button.id === "menuPlayerSelect") {
-                menuBtns[1].classList.remove('active');
+                for (let i = 1; i < menuBtns.length; i++) {
+                    menuBtns[i].classList.remove('active');
+                }
                 button.classList.add('active');
             } else if (button.id === "menuAiSelect") {
                 menuBtns[0].classList.remove('active');
                 button.classList.add('active');
+                if (!menuBtns[2].classList.contains("active") && !menuBtns[3].classList.contains("active")) {
+                    menuBtns[2].classList.add("active");
+                }
+                if (!menuBtns[4].classList.contains("active") && !menuBtns[5].classList.contains("active") &&
+                !menuBtns[6].classList.contains("active")) {
+                    menuBtns[4].classList.add("active");
+                }
             } else if (button.id === "menuCrossSelect") {
+                if (!menuBtns[1].classList.contains("active")) {
+                    menuBtns[1].classList.add("active");
+                }
+                if (!menuBtns[4].classList.contains("active") && !menuBtns[5].classList.contains("active") &&
+                !menuBtns[6].classList.contains("active")) {
+                    menuBtns[4].classList.add("active");
+                }
+                menuBtns[0].classList.remove('active');
                 menuBtns[3].classList.remove('active');
                 button.classList.add('active');
             } else if (button.id === "menuNoughtSelect") {
+                if (!menuBtns[1].classList.contains("active")) {
+                    menuBtns[1].classList.add("active");
+                }
+                if (!menuBtns[4].classList.contains("active") && !menuBtns[5].classList.contains("active") &&
+                !menuBtns[6].classList.contains("active")) {
+                    menuBtns[4].classList.add("active");
+                }
+                menuBtns[0].classList.remove('active');
                 menuBtns[2].classList.remove('active');
                 button.classList.add('active');
             } else if (button.id === "menuEasySelect") {
+                if (!menuBtns[1].classList.contains("active")) {
+                    menuBtns[1].classList.add("active");
+                }
+                if (!menuBtns[2].classList.contains("active") && !menuBtns[3].classList.contains("active")) {
+                    menuBtns[2].classList.add("active");
+                }
+                menuBtns[0].classList.remove('active');
                 menuBtns[5].classList.remove('active');
                 menuBtns[6].classList.remove('active');
                 button.classList.add('active');
             } else if (button.id === "menuMedSelect") {
+                if (!menuBtns[1].classList.contains("active")) {
+                    menuBtns[1].classList.add("active");
+                }
+                if (!menuBtns[2].classList.contains("active") && !menuBtns[3].classList.contains("active")) {
+                    menuBtns[2].classList.add("active");
+                }
+                menuBtns[0].classList.remove('active');
                 menuBtns[4].classList.remove('active');
                 menuBtns[6].classList.remove('active');
                 button.classList.add('active');
             } else if (button.id === "menuHardSelect") {
+                if (!menuBtns[1].classList.contains("active")) {
+                    menuBtns[1].classList.add("active");
+                }
+                if (!menuBtns[2].classList.contains("active") && !menuBtns[3].classList.contains("active")) {
+                    menuBtns[2].classList.add("active");
+                }
+                menuBtns[0].classList.remove('active');
                 menuBtns[4].classList.remove('active');
                 menuBtns[5].classList.remove('active');
                 button.classList.add('active');
@@ -194,7 +261,7 @@ const controller = (() => {
                     }
                     if (!gameOver && vsAi) {
                         aiTurn = true;
-                        aiPlays(difficulty);
+                        setTimeout(() => { aiPlays(difficulty) }, 500);
                     }
                 }
             })
@@ -206,7 +273,7 @@ const controller = (() => {
     //Plays the move
     function playMove(index) {
         board.updateBoard(index, currentPlayer.mark)
-        squares[index].innerHTML = currentPlayer.mark;
+        squares[index].innerHTML = `<span>${currentPlayer.mark}</span>`;
         totalMoves++;
         if (board.checkWin(board.gameBoard, currentPlayer)) {
             gameOver = true;
@@ -254,6 +321,7 @@ const controller = (() => {
         currentPlayer = playerOne;
         totalMoves = 0;
         gameOver = false;
+        aiTurn = false;
         startGame();
     }
 
@@ -323,15 +391,15 @@ const controller = (() => {
     function minimax(newBoard, player, depth, depthLimit = 99) {
         const availCells = getEmptyCells(newBoard);
         if (depth === depthLimit && playerTwo != aiPlayer) {
-            return {score: depth-10}
+            return { score: depth - 10 }
         } else if (depth === depthLimit && playerOne != aiPlayer) {
-            return {score: 10-depth}
+            return { score: 10 - depth }
         } else if (board.checkWin(newBoard, playerTwo) && playerTwo != aiPlayer) {
-            return { score: depth-10 };
+            return { score: depth - 10 };
         } else if (board.checkWin(newBoard, playerOne) && playerOne != aiPlayer) {
-            return { score: depth-10 };
+            return { score: depth - 10 };
         } else if (board.checkWin(newBoard, aiPlayer)) {
-            return { score: 10-depth };
+            return { score: 10 - depth };
         } else if (availCells.length === 0) {
             return { score: 0 };
         }
@@ -344,10 +412,10 @@ const controller = (() => {
             newBoard[availCells[i]] = player.mark;
 
             if (player === playerOne) {
-                let result = minimax(newBoard, playerTwo, depth+1, depthLimit);
+                let result = minimax(newBoard, playerTwo, depth + 1, depthLimit);
                 move.score = result.score;
             } else {
-                let result = minimax(newBoard, playerOne, depth+1, depthLimit);
+                let result = minimax(newBoard, playerOne, depth + 1, depthLimit);
                 move.score = result.score;
             }
 
