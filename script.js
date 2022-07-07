@@ -225,6 +225,14 @@ const controller = (() => {
                     index = Math.floor(Math.random() * 9)
                 }
                 playMove(index);
+            } else if (difficulty === "medium" && playerOne === aiPlayer) {
+                let currentBoardState = getCurrentState(board.gameBoard);
+                let bestMove = minimax(currentBoardState, playerOne, 0, 3);
+                playMove(bestMove.index);
+            } else if (difficulty === "medium" && playerTwo === aiPlayer) {
+                let currentBoardState = getCurrentState(board.gameBoard);
+                let bestMove = minimax(currentBoardState, playerTwo, 0, 3);
+                playMove(bestMove.index);
             } else if (difficulty === "hard" && playerOne === aiPlayer) {
                 let currentBoardState = getCurrentState(board.gameBoard);
                 let bestMove = minimax(currentBoardState, playerOne, 0);
@@ -256,10 +264,13 @@ const controller = (() => {
         return board.filter(i => i != "X" && i != "O");
     }
 
-    function minimax(newBoard, player, depth) {
+    function minimax(newBoard, player, depth, depthLimit = 99) {
         const availCells = getEmptyCells(newBoard);
-
-        if (board.checkWin(newBoard, playerTwo) && playerTwo != aiPlayer) {
+        if (depth === depthLimit && playerTwo != aiPlayer) {
+            return {score: depth-10}
+        } else if (depth === depthLimit && playerOne != aiPlayer) {
+            return {score: 10-depth}
+        } else if (board.checkWin(newBoard, playerTwo) && playerTwo != aiPlayer) {
             return { score: depth-10 };
         } else if (board.checkWin(newBoard, playerOne) && playerOne != aiPlayer) {
             return { score: depth-10 };
@@ -277,10 +288,10 @@ const controller = (() => {
             newBoard[availCells[i]] = player.mark;
 
             if (player === playerOne) {
-                let result = minimax(newBoard, playerTwo, depth+1);
+                let result = minimax(newBoard, playerTwo, depth+1, depthLimit);
                 move.score = result.score;
             } else {
-                let result = minimax(newBoard, playerOne, depth+1);
+                let result = minimax(newBoard, playerOne, depth+1, depthLimit);
                 move.score = result.score;
             }
 
