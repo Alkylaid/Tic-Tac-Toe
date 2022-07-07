@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,33 +9,46 @@
     <script src="script.js" defer></script>
     <title>Tic-Tac-Toe</title>
 </head>
+
 <body>
 
     <div id="modal">
-        <div id="modal-content">
-            <div id="option-buttons">
-            <button class="player-marker" id="cross-option" value="X">X</button>
-            <button class="player-marker" id="nought-option" value="O">O</button>
+        <div id="modal-content-1">
+            <div class="option-buttons">
+                <button class="player-select" id="vs-player" value="player">vs Player</button>
+                <button class="player-select" id="vs-computer" value="ai">vs Computer</button>
+                <select id="difficulty-select" name="difficuty">
+                    <option value="easy">Easy</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <p id="choose-opponent-message">Choose your opponent.</p>
         </div>
-            <p id="start-message">X plays first.</p>
+        <div id="modal-content-2">
+            <div class="option-buttons">
+                <button class="player-marker" id="cross-option" value="X">X</button>
+                <button class="player-marker" id="nought-option" value="O">O</button>
+            </div>
+            <p id="start-message">Choose your marker. X plays first.</p>
         </div>
     </div>
     <div class="container">
         <div id="header"></div>
         <div id="grid">
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-        <div class="grid-item"></div>
-    </div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+        </div>
     </div>
 
 
-    
+
 </body>
+
 </html>

@@ -78,6 +78,8 @@ const controller = (() => {
     const modal = document.getElementById("modal");
     const squares = document.querySelectorAll(".grid-item");
     const markerButtons = document.querySelectorAll(".player-marker");
+    const vsComputerBtn = document.getElementById("vs-computer");
+    const vsPlayerBtn = document.getElementById("vs-player")
     markerButtons.forEach((button) => {
         button.addEventListener('click', () => {
             startGame(button.value);
